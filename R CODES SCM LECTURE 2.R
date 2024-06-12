@@ -16,7 +16,7 @@ str(df_s)
 max(df_s$Rs) 
 min(df_s$Rs)
 
-df_s[df_s$Rs >120,]
+df_s[df_s$Rs >1000,]
 
 library(fitdistrplus)
 
@@ -57,10 +57,9 @@ library(dplyr)
 dput(names(df_p))
 unique(df_p$wicket_confirmation)
 
-library(dplyr)
 
 # Print the column names of df_p to verify
-print("Column names of df_p:")
+
 print(colnames(df_p))
 
 # Assuming the column names in df_p are correct as used in the select function
@@ -147,6 +146,8 @@ df = joined_df %>%
 select(Striker,Season.x,avg_runs,wicket)
 View(df)
 
+#To merge two files with sames names but differnt spellings
+
 library(dplyr)
 library(stringdist)
 
@@ -221,14 +222,15 @@ write.csv(df_combined, 'df_combined.csv', row.names = FALSE)
 =====================================================================
 max(df_combined$avg_runs, na.rm=TRUE)
 max(df_combined$wicket, na.rm=TRUE)
+890/28
 
-quantile(df_combined$avg_runs, na.rm=TRUE,.9)
+quantile(df_combined$avg_runs, na.rm=TRUE,0.9)
 quantile(df_combined$wicket, na.rm=TRUE,.9)
 
-348.7/28 
-# 12.45
+274/17.8  
+# 15.5
 
-df_combined$performance = df_combined$avg_runs+ 12.5*df_combined$wicket
+df_combined$performance = df_combined$avg_runs+ 15.5*df_combined$wicket
 any(is.na(df_combined$performance))
 sum(is.na(df_combined$performance))
 
@@ -239,20 +241,23 @@ sum(is.na(df_combined$performance))
 df_new <- df_combined %>%
   mutate(performance = ifelse(is.na(performance), 0, performance))
 
+any(is.na(df_new$performance))
+
 names(df_new)
 str(df_new)
 
-
+boxplot(df_new1$performance)
+df_new[df_new$performance>200,]
 hist(df_new$performance, prob=TRUE)
 lines(density(df_new$performance), na.rm=TRUE)
-
+df_new1 = df_new[df_new$performance<200,]
 library(fitdistrplus)
-descdist(df_new$performance)
+descdist(df_new1$performance)
 head(df_new)
 sum(is.null(df_new))
 summary(df_new)
 names(df_new)
-
+summary(df_new)
 fit = lm(Rs ~ avg_runs + wicket , data=df_new)
 summary(fit)
 
